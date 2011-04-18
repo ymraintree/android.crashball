@@ -16,8 +16,7 @@ object Pad {
 
 class Pad extends ActiveObject {
 
-//  private var mScreenWide = 100
-  private var mScreenWide = 200
+  private var mScreenWide = 100
   var x = .0f
   var y = .0f
   private var mTouchX: Float = 100
