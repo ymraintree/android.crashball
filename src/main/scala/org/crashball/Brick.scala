@@ -1,43 +1,42 @@
 package org.crashball
 
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.{Color, Canvas, Paint, Rect}
 
 object Brick {
-  var HEIGHT: Int = 20
-  var WIDE: Int = 32
+  var height: Int = 20
+  var width: Int = 32
 
-  def setWidth(w:Int) { WIDE  = w / 10 }
-  def setHeight(h:Int) { HEIGHT  = h * 6 / 8 / 2 / 10 }
+  def setWidth(w: Int) {
+    width = w / 10
+  }
+
+  def setHeight(h: Int) {
+    height = h * 6 / 8 / 2 / 10
+  }
 }
 
-abstract class Brick extends ActiveObject {
+class Brick extends ActiveObject {
+  var x = 0
+  var y = 0
+  var lx = 0
+  var ly = 0
+
   def this(x: Int, y: Int) {
     this ()
-    this.x = x * Brick.WIDE
-    this.y = y * Brick.HEIGHT + CrashBallView.STATE
-    this.ly = this.y + Brick.HEIGHT
-    this.lx = this.x + Brick.WIDE
+    this.x = x * Brick.width
+    this.y = y * Brick.height + CrashBallView.STATE
+    this.ly = this.y + Brick.height
+    this.lx = this.x + Brick.width
   }
 
-  def getRect: Rect = {
-    return (new Rect(x, y, lx, ly))
-  }
+  def getRect: Rect = new Rect(x, y, lx, ly)
 
-  def update: Unit = {
-  }
+  def update {}
 
-  def draw(canvas: Canvas, paint: Paint): Unit = {
+  def draw(canvas: Canvas, paint: Paint) {
+    paint.setColor(Color.RED)
     canvas.drawRect(x, y, lx - 1, ly - 1, paint)
   }
 
-  def crash(ball: Ball, crashPoint: Int): Boolean = {
-    return true
-  }
-
-  var x: Int = 0
-  var y: Int = 0
-  var lx: Int = 0
-  var ly: Int = 0
+  def crash(ball: Ball, crashPoint: Int): Boolean = true
 }

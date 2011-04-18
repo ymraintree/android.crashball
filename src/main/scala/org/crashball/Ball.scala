@@ -28,21 +28,13 @@ class Ball extends ActiveObject {
   var y = .0f
   var g = 0.15f
 
-  def getlx: Float = {
-    x + Ball.SIZE
-  }
+  def lx: Float = x + Ball.SIZE
 
-  def getcx: Float = {
-    x + Ball.HALF_SIZE
-  }
+  def cx: Float = x + Ball.HALF_SIZE
 
-  def getly: Float = {
-    y + Ball.SIZE
-  }
+  def ly: Float = y + Ball.SIZE
 
-  def getRect: Rect = {
-    new Rect(x.asInstanceOf[Int] - 1, y.asInstanceOf[Int] - 1, getlx.asInstanceOf[Int] + 1, getly.asInstanceOf[Int] + 1)
-  }
+  def getRect: Rect = new Rect(x.asInstanceOf[Int] - 1, y.asInstanceOf[Int] - 1, lx.asInstanceOf[Int] + 1, ly.asInstanceOf[Int] + 1)
 
   def this(x: Float, y: Float, xSpeed: Float, ySpeed: Float, w: Int, h: Int) {
     this ()
@@ -71,11 +63,9 @@ class Ball extends ActiveObject {
   }
 
   private def getAfterCrashPoint(speed: Float, position: Float, wall: Int): Int = {
-    val intPosition: Int = position.asInstanceOf[Int]
-    val intSpeed: Int = speed.asInstanceOf[Int]
-    var newPoint: Int = ((wall * 2) - intPosition - intSpeed)
+    var newPoint: Int = ((wall * 2) - position.asInstanceOf[Int] - speed.asInstanceOf[Int])
     // 壁のめりこみ対策
-    if ((speed > 0 && newPoint > wall) || (speed < 0 && newPoint < wall)) newPoint = wall.asInstanceOf[Int]
+    if ((0 < speed && wall < newPoint) || (speed < 0 && newPoint < wall)) newPoint = wall.asInstanceOf[Int]
     newPoint
   }
 
@@ -86,7 +76,6 @@ class Ball extends ActiveObject {
       xSpeed *= -1.01f
       xSpeed = getNewSpeed(xSpeed, maxXSpeed)
     } else {
-      val lx = getlx
       if (mScreenWide <= lx + xSpeed) {
         x = getAfterCrashPoint(xSpeed, lx, mScreenWide) - Ball.SIZE
         xSpeed *= -1.01f
